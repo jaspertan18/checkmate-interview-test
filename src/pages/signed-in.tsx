@@ -1,14 +1,62 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useState } from "react";
+import {
+    Container,
+    Heading,
+    Button,
+    Flex,
+    Box,
+    Divider,
+    Text,
+    Card,
+    CardBody,
+    CardFooter,
+} from "@chakra-ui/react";
 
 export default function SignedIn({
     joke,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     return (
-        <div>
-            <h1>Signed In</h1>
+        <Container mt="10%">
+            <Heading size="xl">Signed In</Heading>
             {/* Task 3: Your own presentation of the joke here (Free Style 😉 )*/}
+            <Card mt="3%">
+                <CardBody>
+                    <Flex alignItems="center" justifyContent="space-between">
+                        <Box w="70%">
+                            <Text>{joke.setup}</Text>
+                        </Box>
+                        <Button isDisabled={show} onClick={() => setShow(true)}>
+                            Reveal
+                        </Button>
+                    </Flex>
+                    {show ? (
+                        <Box w="70%">
+                            <Divider m="2% 0" />
+                            <Text>{joke.punchline}</Text>
+                        </Box>
+                    ) : (
+                        <></>
+                    )}
+                </CardBody>
+                <CardFooter>
+                    <Button
+                        colorScheme="twitter"
+                        isLoading={loading}
+                        onClick={() => {
+                            window.location.reload();
+                            setLoading(true);
+                        }}
+                    >
+                        Next joke
+                    </Button>
+                </CardFooter>
+            </Card>
             {/* End of Task 3 */}
-        </div>
+        </Container>
     );
 }
 
